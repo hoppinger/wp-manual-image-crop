@@ -14,7 +14,7 @@ class MicSettingsPage
         add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
         add_action( 'admin_init', array( $this, 'page_init' ) );
     }
-    
+
     /**
      * Fix of settings serialized twice or more
      * @return mixed
@@ -32,6 +32,8 @@ class MicSettingsPage
     		}
     		$settings = unserialize($settings);
     	}
+
+        $settings = apply_filters('filter_man_image_crop_settings', $settings);
     	return $settings;
     }
 
@@ -42,10 +44,10 @@ class MicSettingsPage
     {
         // This page will be under "Settings"
         add_options_page(
-            'Settings Admin', 
-            'Manual Image Crop', 
-            'manage_options', 
-            'Mic-setting-admin', 
+            'Settings Admin',
+            'Manual Image Crop',
+            'manage_options',
+            'Mic-setting-admin',
             array( $this, 'create_admin_page' )
         );
     }
@@ -58,13 +60,13 @@ class MicSettingsPage
         ?>
         <div class="wrap">
             <?php screen_icon(); ?>
-            <h2>Manual Image Crop Settings</h2>           
+            <h2>Manual Image Crop Settings</h2>
             <form method="post" action="options.php" class="mic-settings-page">
             <?php
                 // This prints out all hidden setting fields
-                settings_fields( 'mic_options_group' );   
+                settings_fields( 'mic_options_group' );
                 do_settings_sections( 'Mic-setting-admin' );
-                submit_button(); 
+                submit_button();
             ?>
             </form>
         </div>
@@ -75,7 +77,7 @@ class MicSettingsPage
      * Register and add settings
      */
     public function page_init()
-    {        
+    {
         register_setting(
             'mic_options_group', // Option group
             'mic_options', // Option name
@@ -87,15 +89,15 @@ class MicSettingsPage
             'Mic Custom Settings', // Title
             array( $this, 'print_section_info' ), // Callback
             'Mic-setting-admin' // Page
-        );  
+        );
 
         add_settings_field(
             'sizes_settings', // ID
-            'Crop sizes settings', // Title 
+            'Crop sizes settings', // Title
             array( $this, 'sizes_settings_callback' ), // Callback
             'Mic-setting-admin', // Page
-            'setting_section_id' // Section           
-        );          
+            'setting_section_id' // Section
+        );
     }
 
     /**
@@ -112,7 +114,7 @@ class MicSettingsPage
         return $new_input;
     }
 
-    /** 
+    /**
      * Print the Section text
      */
     public function print_section_info()
@@ -120,15 +122,15 @@ class MicSettingsPage
         print 'Enter your settings below:';
     }
 
-    /** 
+    /**
      * Get the settings option array and print one of its values
      */
     public function sizes_settings_callback()
     {
 		global $_wp_additional_image_sizes;
-		
+
     	$imageSizes = get_intermediate_image_sizes();
-    	
+
         $sizeLabels = apply_filters( 'image_size_names_choose', array(
             'thumbnail' => __('Thumbnail'),
             'medium'    => __('Medium'),
@@ -136,7 +138,7 @@ class MicSettingsPage
             'full'      => __('Full Size'),
         ) );
         $sizeLabels = apply_filters( 'image_size_names_choose', array() );
-		
+
 		echo '<table class="widefat fixed" cellspacing="0">';
 		echo '<thead>
 			  <tr>
@@ -147,9 +149,9 @@ class MicSettingsPage
 			  </tr>
 			 </thead>
              <tbody>';
-		
+
 		$sizesSettings = self::getSettings();
-		
+
 		foreach ($imageSizes as $s) {
 			$label = isset($sizeLabels[$s]) ? $sizeLabels[$s] : ucfirst( str_replace( '-', ' ', $s ) );
 			if (isset($_wp_additional_image_sizes[$s])) {
@@ -157,11 +159,11 @@ class MicSettingsPage
 			} else {
 				$cropMethod = get_option($s.'_crop');
 			}
-			
+
 			if ($cropMethod == 0) {
 				continue;
 			}
-			
+
 			echo '<tr>
 			     <td>' . $label. '</td>
 			     <td><select name="mic_options[sizes_settings][' . $s . '][visibility]">
@@ -181,7 +183,7 @@ class MicSettingsPage
 			</tr>';
 		}
 		echo '</tbody></table>';
-		
+
     }
 }
 
