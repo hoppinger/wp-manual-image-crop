@@ -46,8 +46,12 @@
 }
 
 .mic-editor-wrapper h2 .nav-tab {
-	font-size: 16px;
-	padding: 4px;
+	font-size: 12px;
+	padding: 2px 3px;
+	margin: 1px 3px 3px 1px;
+	display: inline-block;
+ 	font-weight: normal;
+ 	line-height: 16px
 }
 
 #micSuccessMessage, #micFailureMessage {
@@ -86,7 +90,7 @@
 	float: left;
 	width: 100px;
 	margin-top: 23px;
-	line-height: 11px; 
+	line-height: 11px;
 }
 
 .mic-editor-wrapper .nav-tab-wrapper {
