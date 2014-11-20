@@ -1,0 +1,8 @@
+{
+    "name": "hoppinger/wp-manual-image-crop",
+    "description": "Plugin allows you to manually crop all the image sizes registered in your WordPress theme (in particular featured image).",
+    "type": "wordpress-plugin",
+    "license": "GPLv2 or later",
+    "minimum-stability": "stable",
+    "require": {}
+}
